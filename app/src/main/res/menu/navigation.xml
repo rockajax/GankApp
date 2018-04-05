@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group/>
+
+
+    <item android:title="功能">
+        <menu>
+            <item
+                android:id="@+id/item_1"
+                android:title="收藏的图片" />
+            <item
+                android:id="@+id/item_2"
+                android:title="干货官网" />
+            <item
+                android:id="@+id/item_3"
+                android:title="我可以设置壁纸噢" />
+            <item
+                android:id="@+id/item_4"
+                android:title="查询学生照片" />
+
+        </menu>
+    </item>
+
+
+
+
+</menu>
