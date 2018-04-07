@@ -1,8 +1,6 @@
 package activity;
 
-import android.app.ActionBar;
 import android.app.WallpaperManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,25 +9,21 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.mac.fuckthingapp.R;
 
 import java.io.File;
 import java.io.IOException;
 
-import Utils.CacheUtil;
-import Utils.FileUtil;
-import Utils.MD5Util;
+import Loader.ImageLoader;
+import Loader.FileUtil;
+import Loader.MD5Util;
 import Utils.ToastUtil;
 
 import static android.content.ContentValues.TAG;
@@ -68,7 +62,11 @@ public class ShowImgActivity extends AppCompatActivity {
 
     private void SetImgView(final String url){
         if(url!=null){
-            CacheUtil.getInstance(ShowImgActivity.this).setImageCacheNotCompress(url,imageView,true);
+            ImageLoader.setContext(ShowImgActivity.this)
+                       .load(url)
+                       .into(imageView)
+                       .setNullBitmap(true)
+                       .begin();
         }
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

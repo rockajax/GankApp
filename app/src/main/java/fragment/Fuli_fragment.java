@@ -4,10 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +23,9 @@ import java.util.List;
 
 import adapter.FuliRecAdapter;
 import mConfig.Config;
-import Utils.HttpUtil;
+import Loader.HttpUtil;
 import Utils.JsonUtil;
+import manager.WrapStaggeredGridLayoutManager;
 import model.FuliBean;
 
 /**
@@ -76,7 +81,7 @@ public class Fuli_fragment extends android.support.v4.app.Fragment {
                     }
                 });
                 recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new GridLayoutManager(context,2));
+                recyclerView.setLayoutManager(new WrapStaggeredGridLayoutManager(2,WrapStaggeredGridLayoutManager.VERTICAL));
             }
         });
     }
@@ -96,9 +101,7 @@ public class Fuli_fragment extends android.support.v4.app.Fragment {
             public void run() {
                 swipeRefreshLayout.setRefreshing(false);
                 beanList.clear();
-                if(recyclerView.getChildAt(0)!=null){
-                    recyclerView.removeAllViews();
-                }
+                adapter.notifyDataSetChanged();
                 String url = Config.getURL("福利",20,2);
                 HttpUtil.get(url, new HttpUtil.Callback() {
                     @Override

@@ -3,6 +3,7 @@ package adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,9 +16,9 @@ import com.example.mac.fuckthingapp.R;
 
 import java.util.List;
 
-import Utils.CacheUtil;
+import Loader.ImageLoader;
 import mConfig.Config;
-import Utils.HttpUtil;
+import Loader.HttpUtil;
 import Utils.JsonUtil;
 import Utils.TimeUtil;
 import model.FuliBean;
@@ -74,7 +75,11 @@ public class FuliRecAdapter extends RecyclerView.Adapter{
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder,final int position) {
         if(holder instanceof mViewHolder){
-            CacheUtil.getInstance(context).setImageCacheNotCompress(beanList.get(position).getUrl(),((mViewHolder) holder).imageView,true);
+             ImageLoader.setContext(context)
+                        .load(beanList.get(position).getUrl())
+                        .into(((mViewHolder) holder).imageView)
+                        .setNullBitmap(true)
+                        .begin();
             ((mViewHolder) holder).textView.setText(TimeUtil.FormatTime(beanList.get(position).getPublishedAt())
                     + " 作者:"+beanList.get(position).getWho());
             /**
@@ -91,19 +96,12 @@ public class FuliRecAdapter extends RecyclerView.Adapter{
                 });
             }
         }
+
         if (getItemViewType(position) == FOOTER){
             loadmore();
         }
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (isLoadMore) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
+
+
     }
     private static int i = 2;
     private void loadmore(){
@@ -128,6 +126,7 @@ public class FuliRecAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
+        Log.d("fxy", "getItemCount: "+beanList.size());
         return beanList.size()+1;
     }
 
@@ -148,5 +147,6 @@ public class FuliRecAdapter extends RecyclerView.Adapter{
 
     public void refreshData(List<FuliBean> beanList1){
         beanList = beanList1;
+        i=2;
     }
 }

@@ -3,20 +3,11 @@ package fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,23 +17,8 @@ import android.widget.ImageView;
 
 import com.example.mac.fuckthingapp.R;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import Utils.CacheUtil;
-import Utils.FileUtil;
-import Utils.MD5Util;
-import Utils.ToastUtil;
-import activity.ShowImgActivity;
-import adapter.FuliRecAdapter;
-import manager.LinearLayoutManagerWrapper;
+import Loader.ImageLoader;
 import mConfig.Config;
-import Utils.HttpUtil;
-import Utils.JsonUtil;
-import model.FuliBean;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by mac on 2018/4/3.
@@ -90,8 +66,11 @@ public class Stu_fragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if(s.length()==10){
-                        CacheUtil.getInstance(context)
-                                .setImageCacheNotCompress(Config.getStuPhotoUrl(s.toString()),imageView,true);
+                         ImageLoader.setContext(context)
+                                    .load(Config.getStuPhotoUrl(s.toString()))
+                                    .into(imageView)
+                                    .setNullBitmap(true)
+                                    .begin();
                             url = s.toString();
                     }
             }

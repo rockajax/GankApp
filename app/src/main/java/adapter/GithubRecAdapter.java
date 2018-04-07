@@ -5,12 +5,10 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,11 +19,9 @@ import com.example.mac.fuckthingapp.R;
 import java.util.List;
 
 import mConfig.Config;
-import Utils.HttpUtil;
+import Loader.HttpUtil;
 import Utils.JsonUtil;
-import Utils.TimeUtil;
 import model.GithubBean;
-import view.GifView;
 
 import static android.content.ContentValues.TAG;
 
@@ -147,7 +143,6 @@ public class GithubRecAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount: "+beanList.size());
         return beanList.size()+1;
     }
 
@@ -173,5 +168,6 @@ public class GithubRecAdapter extends RecyclerView.Adapter{
 
     public void refreshData(List<GithubBean> beanList1){
         beanList = beanList1;
+        i=2;
     }
 }

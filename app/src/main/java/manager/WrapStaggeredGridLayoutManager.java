@@ -9,17 +9,14 @@ import android.util.AttributeSet;
  * Created by mac on 2018/4/3.
  */
 
-public class LinearLayoutManagerWrapper extends LinearLayoutManager {
-    public LinearLayoutManagerWrapper(Context context) {
-        super(context);
-    }
+public class WrapStaggeredGridLayoutManager extends android.support.v7.widget.StaggeredGridLayoutManager {
 
-    public LinearLayoutManagerWrapper(Context context, int orientation, boolean reverseLayout) {
-        super(context, orientation, reverseLayout);
-    }
-
-    public LinearLayoutManagerWrapper(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public WrapStaggeredGridLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    public WrapStaggeredGridLayoutManager(int spanCount, int orientation) {
+        super(spanCount, orientation);
     }
 
     @Override

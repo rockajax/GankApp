@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.GithubRecAdapter;
-import manager.LinearLayoutManagerWrapper;
 import mConfig.Config;
-import Utils.HttpUtil;
+import Loader.HttpUtil;
 import Utils.JsonUtil;
 import model.GithubBean;
 
@@ -61,7 +62,7 @@ public class Github_fragment extends Fragment {
             public void onResponse(String response) {
                 JsonUtil.AddData1(response,beanList);
                 recyclerView = view.findViewById(R.id.android_recyclerview);
-                LinearLayoutManagerWrapper linearLayoutManager = new LinearLayoutManagerWrapper(context);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
                 adapter = new GithubRecAdapter(beanList,context,recyclerView);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(linearLayoutManager);
@@ -95,7 +96,7 @@ public class Github_fragment extends Fragment {
             public void run() {
                 swipeRefreshLayout.setRefreshing(false);
                 beanList.clear();
-                recyclerView.removeAllViews();
+                adapter.notifyDataSetChanged();
                 String url = Config.getURL("Android",20,1);
                 HttpUtil.get(url, new HttpUtil.Callback() {
                     @Override
