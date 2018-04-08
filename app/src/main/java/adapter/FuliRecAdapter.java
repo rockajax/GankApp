@@ -16,7 +16,8 @@ import com.example.mac.fuckthingapp.R;
 
 import java.util.List;
 
-import Loader.ImageLoader;
+import config.RequestOptions;
+import start.ImageLoader;
 import mConfig.Config;
 import Loader.HttpUtil;
 import Utils.JsonUtil;
@@ -70,16 +71,27 @@ public class FuliRecAdapter extends RecyclerView.Adapter{
     public void onItemClickListner(OnItemClickListener onItemClickListener){
         MyonItemClickListener = onItemClickListener;
     }
-
+    private final RequestOptions options = new RequestOptions()
+            .setPreloadPic(R.mipmap.ic_launcher_round)
+            .setErrorPic(R.mipmap.ic_launcher);
     @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder,final int position) {
         if(holder instanceof mViewHolder){
-             ImageLoader.setContext(context)
-                        .load(beanList.get(position).getUrl())
-                        .into(((mViewHolder) holder).imageView)
-                        .setNullBitmap(true)
-                        .begin();
+
+
+            ImageLoader
+                    .with(context)
+                    .load(beanList.get(position).getUrl())
+                    .into(((mViewHolder) holder).imageView)
+                    .apply(options)
+                    .display();
+
+//             ImageLoader.setContext(context)
+//                        .load(beanList.get(position).getUrl())
+//                        .into(((mViewHolder) holder).imageView)
+//                        .setNullBitmap(true)
+//                        .begin();
             ((mViewHolder) holder).textView.setText(TimeUtil.FormatTime(beanList.get(position).getPublishedAt())
                     + " 作者:"+beanList.get(position).getWho());
             /**

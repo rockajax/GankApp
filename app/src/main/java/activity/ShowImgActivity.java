@@ -21,7 +21,8 @@ import com.example.mac.fuckthingapp.R;
 import java.io.File;
 import java.io.IOException;
 
-import Loader.ImageLoader;
+import config.RequestOptions;
+import start.ImageLoader;
 import Loader.FileUtil;
 import Loader.MD5Util;
 import Utils.ToastUtil;
@@ -59,14 +60,17 @@ public class ShowImgActivity extends AppCompatActivity {
             });
         }
     }
-
+    RequestOptions options = new RequestOptions()
+            .setPreloadPic(R.mipmap.ic_launcher_round)
+            .setErrorPic(R.mipmap.ic_launcher);
     private void SetImgView(final String url){
         if(url!=null){
-            ImageLoader.setContext(ShowImgActivity.this)
-                       .load(url)
-                       .into(imageView)
-                       .setNullBitmap(true)
-                       .begin();
+            ImageLoader
+                    .with(ShowImgActivity.this)
+                    .load(url)
+                    .into(imageView)
+                    .apply(options)
+                    .display();
         }
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,16 +84,16 @@ public class ShowImgActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String filename = MD5Util.StringToMD5(url.substring(url.lastIndexOf(File.separator) + 1));
-                byte[] data = FileUtil.getInstance(ShowImgActivity.this).readBytesFromStorage(filename);
-                if(data!=null && data.length>0){
+                    String filename = MD5Util.StringToMD5(url);
+                    String path = ImageLoader.getInstance().getContext().getExternalCacheDir().getPath();
                     Log.d(TAG, "在showImgActivity中保存图片");
-                    bitmap = BitmapFactory.decodeByteArray(data,0,data.length);
+                    Bitmap bitmap = Utils.FileUtil.getBitmapFromDisk(filename,path);
+
                     MediaStore.Images.Media.insertImage(ShowImgActivity.this.getContentResolver(),bitmap,filename,null);
                     Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     File file = null;
                     if (filename != null) {
-                        file = new File(ShowImgActivity.this.getFilesDir(),filename);
+                        file = new File(path,filename);
                     }
                     Uri uri = Uri.fromFile(file);
                     intent.setData(uri);
@@ -103,7 +107,6 @@ public class ShowImgActivity extends AppCompatActivity {
                             .setColor(Color.WHITE,Color.BLACK)
                             .setGravity(Gravity.CENTER,0,0)
                             .show(3000);
-                }
             }
         });
     }
@@ -112,11 +115,10 @@ public class ShowImgActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 WallpaperManager manager = WallpaperManager.getInstance(ShowImgActivity.this);
-                String filename = MD5Util.StringToMD5(url.substring(url.lastIndexOf(File.separator) + 1));
-                byte[] data = FileUtil.getInstance(ShowImgActivity.this).readBytesFromStorage(filename);
-                if(data!=null && data.length>0){
+                String filename = MD5Util.StringToMD5(url);
                     Log.d(TAG, "在showImgActivity中保存图片");
-                    bitmap = BitmapFactory.decodeByteArray(data,0,data.length);
+                    String path = ImageLoader.getInstance().getContext().getExternalCacheDir().getPath();
+                    Bitmap bitmap = Utils.FileUtil.getBitmapFromDisk(filename,path);
                     try {
                         manager.setBitmap(bitmap);
                         new ToastUtil(ShowImgActivity.this
@@ -135,7 +137,7 @@ public class ShowImgActivity extends AppCompatActivity {
                                 .show(3000);
                     }
 
-                }
+
             }
         });
     }

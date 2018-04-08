@@ -1,4 +1,4 @@
-package com.example.imageloader;
+package com.example.mimageloader;
 
 import org.junit.Test;
 

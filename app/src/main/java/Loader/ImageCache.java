@@ -15,7 +15,6 @@ import java.util.Map;
 
 public class ImageCache extends LruCache<String,Bitmap> {
 
-
     private Map<String,SoftReference<Bitmap>> CacheMap;//定义一个强引用 用于查询bitmap
 
     public ImageCache(Map<String, SoftReference<Bitmap>> cacheMap) {

@@ -54,6 +54,7 @@ public class Github_fragment extends Fragment {
         initRefresh();
         return view;
     }
+
     private void initData(){
         beanList = new ArrayList<>();
         String url = Config.getURL("Android",20,1);

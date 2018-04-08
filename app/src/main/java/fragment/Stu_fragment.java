@@ -63,6 +63,10 @@ public class Stu_fragment extends Fragment {
 
             }
 
+
+            /**
+             *用了个老版的图片加载
+             */
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if(s.length()==10){
