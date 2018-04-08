@@ -32,7 +32,7 @@
   init方法里面配置了source、loader、cache策略，初始化了RequestOption。提供了set方法来设置cache策略、apply方法设置option、into设置显示的ImageView、display方法配置loader<br>
 
 ### 三、Loader（加载类）<br>
->	  抽象类mLoader：所有Loader父类。<br>
+>	  抽象类mLoader：所有Loader父类。
 
 1、checkEngine的方法来确认是否有必要配置的cache和config ps：cache和config需要提供 setter getter。只有这里设置了config 后面的子类才能进一步判断加载方式<br>
 2、提供一个checkSource的抽象方法来确认传入的资源来源。<br>
