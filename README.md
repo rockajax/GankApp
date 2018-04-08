@@ -64,6 +64,9 @@ sizeof用来判断图片的大小，若大了就销毁LruCache里面的图片，
 entryRemoved：这里用软引用接受来自LruCache销毁的图片<br>
 4、DefaultNetCache(默认缓存策略) 一起用了三种缓存策略<br>
 
+### 使用module<br>
+> 新建module 然后在project structure里面向app里添加module依赖就可以了
+<br>
 
 ### 使用方法<br>
 ```
